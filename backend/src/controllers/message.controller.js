@@ -73,6 +73,10 @@ export const sendMessage = asyncHandler(async (req, res) => {
 
   let imageUrl;
   if (image) {
+    if (!cloudinary) {
+      throw new CustomError("Image uploads are not configured", 503);
+    }
+
     // Upload image to Cloudinary and store the secure URL
     const uploadResponse = await cloudinary.uploader.upload(image);
     imageUrl = uploadResponse.secure_url;

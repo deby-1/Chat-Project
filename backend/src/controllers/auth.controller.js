@@ -101,6 +101,10 @@ export const updateProfile = asyncHandler(async (req, res) => {
     throw new CustomError("Please provide a profile picture", 400);
   }
 
+  if (!cloudinary) {
+    throw new CustomError("Profile picture uploads are not configured", 503);
+  }
+
   // Upload using the temp file path
   const uploadResponse = await cloudinary.uploader.upload(profilePic);
   const updatedUser = await User.findByIdAndUpdate(

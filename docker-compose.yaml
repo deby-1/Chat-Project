@@ -1,0 +1,58 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - frontend_network
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment:
+      NODE_ENV: development
+      PORT: 8080
+      CLIENT_URL: http://localhost:3000
+      MONGODB_URI: mongodb://mongo:27017/sockettalk
+      JWT_SECRET: f8ffdfc104535c21151bf35d41d054979de2cab84ad0286694007e2c92d0de0d
+      # Cloudinary is optional; uncomment these and set the values in .env to enable image uploads.
+      # CLOUDINARY_CLOUD_NAME: ${CLOUDINARY_CLOUD_NAME:-}
+      # CLOUDINARY_API_KEY: ${CLOUDINARY_API_KEY:-}
+      # CLOUDINARY_API_SECRET: ${CLOUDINARY_API_SECRET:-}
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+    networks:
+      - frontend_network
+      - database_network
+    restart: unless-stopped
+
+  mongo:
+    image: mongo:8.0
+    volumes:
+      - mongodb_data:/data/db
+    expose:
+      - "27017"
+    networks:
+      - database_network
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  mongodb_data:
+
+networks:
+  frontend_network:
+  database_network:
+    internal: true
