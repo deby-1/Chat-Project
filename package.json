@@ -1,12 +1,13 @@
 {
   "name": "sockettalk",
   "version": "1.0.0",
-  "description": "",
+  "description": "**Socket Chat** is a real-time full-stack chat application built using the **MERN** stack with **Socket.IO** for live messaging and **JWT** authentication using cookies. It features 1-on-1 chat, image messaging, user listing, and protected routes — all wrapped in a responsive UI powered by **TailwindCSS**.",
   "main": "server.js",
   "scripts": {
-    "build": "npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend",
-    "start": "npm run start --prefix backend"
-  },
+  "build": "node --check app.js",
+  "test": "jest --runInBand",
+  "start": "npm run start --prefix backend"
+},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/unais-08/socket-talk.git"
@@ -16,5 +17,13 @@
   "bugs": {
     "url": "https://github.com/unais-08/socket-talk/issues"
   },
-  "homepage": "https://github.com/unais-08/socket-talk#readme"
+  "homepage": "https://github.com/unais-08/socket-talk#readme",
+  "keywords": [],
+  "dependencies": {
+    "express": "^5.3.0"
+  },
+  "devDependencies": {
+    "jest": "^30.5.2",
+    "supertest": "^7.3.1"
+  }
 }
