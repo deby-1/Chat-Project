@@ -9,9 +9,11 @@ RUN npm ci --prefix frontend
 COPY frontend/ ./frontend/
 RUN npm run build --prefix frontend
 
-FROM nginx:alpine
+FROM nginxinc/nginx-unprivileged:alpine
 
 COPY frontend/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /app/frontend/dist /usr/share/nginx/html
 
-EXPOSE 80
+USER nginx
+
+EXPOSE 8080

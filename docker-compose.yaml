@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: frontend/Dockerfile
     ports:
-      - "3000:80"
+      - "3000:8080"
     depends_on:
       - backend
     networks:
@@ -15,12 +15,9 @@ services:
     build:
       context: .
       dockerfile: backend/Dockerfile
-    environment:
-      NODE_ENV: development
-      PORT: 8080
-      CLIENT_URL: http://localhost:3000
-      MONGODB_URI: mongodb://mongo:27017/sockettalk
-      JWT_SECRET: f8ffdfc104535c21151bf35d41d054979de2cab84ad0286694007e2c92d0de0d
+    env_file:
+      - .env
+     
       # Cloudinary is optional; uncomment these and set the values in .env to enable image uploads.
       # CLOUDINARY_CLOUD_NAME: ${CLOUDINARY_CLOUD_NAME:-}
       # CLOUDINARY_API_KEY: ${CLOUDINARY_API_KEY:-}
